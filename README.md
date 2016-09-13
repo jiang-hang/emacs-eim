@@ -201,17 +201,17 @@ register-input-method 中加入一个 active-function。而 eim-active-hook
 是为用户定制设计的，这样不用专门写到一个文件中。设置
 eim-active-function 使用eim-set-active-function 函数。
 
-eim-stop-function
+**eim-stop-function**
   : 这个函数是用于决定是否停止转换。比如五笔中可以设置当 eim-current-key 大于 4
 时就停止。默认是 nil，也就是说可以无限的输入。
 
-eim-translate-function
+**eim-translate-function**
   : 当输入的字符是第一个字符（eim-current-key为空）时，如果不在
 eim-first-char 中，或者不是第一个字符，但是不在 eim-total-char 中，会
 停止转换。这时，会调用这个函数来处理最后一个输入字符。通常用这个函数来
 输入标点。
 
-eim-add-completion-function
+**eim-add-completion-function**
   : 通过这个函数来为当前的词条添加更多的选项。当往后翻页超出直接查找到的词
 条时，会调用这个函数，如果添加结束，返回 t，还需要再添加返回 nil。
 我写的五笔输入法用这个函数时是直接一次性加完。如果要每次添加几个的话，
@@ -219,16 +219,18 @@ eim-add-completion-function
 位置。下次从这个位置继续，直到结束，比较麻烦。而且，一次加完的速度也很
 快，就用简单的办法好了。
 
-eim-format-function
+**eim-format-function**
   : eim-current-choice 中的第一个元素是通常是一个字符串列表。但是也可以含
 有 list。这时需要给出一个显示的函数。比如我在五笔输入法中搜索出可能的
 单字或者输入拼音时显示五笔字根。
 这个函数要接受四个参数，分别是当前输入的字符串 eim-current-key，
 当前页数，所有页数，这一页的选项。
 
-eim-handle-function
+**eim-handle-function**
   : 这个函数是决定输入法行为的核心函数。通常要完成的任务是：
+  
     1. 决定是否要继续转换。
+	
     2. 设置 eim-current-choice, eim-current-pos, eim-current-str,
        eim-guidance-str, 最后调用 eim-show 显示结果。通常如果
        eim-current-choice 的 CAR 不为空的话，就调用 eim-format-page 显示。
