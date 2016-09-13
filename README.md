@@ -99,11 +99,10 @@ eim-wb-user-file 的位置。eim-wb-history-file 要修改成能保存的文件�
 
 1. 假设使用pyword2tbl.pl的三个步骤都成功了，生成的文件为sg.txt。最后使用mergepy.pl工具来合并词库。方法如下所示：
 
-1. 详细说明一下 mergepy.pl 的用法。如果我发布一个新版本的拼音词库，要使用
-这个词库又不想丢失自己词库里新造的词和词频信息，这时就可以用这个程序。
-在命令行中用这样的命令：
+1. 要使用这个词库又不想丢失自己词库里新造的词和词频信息，就可以用mergepy.pl。
+可在命令行中用这样的命令：
 
-    `$ perl mergepy.pl 自己的词库文件 新词库文件 -o py-new.txt`
+    `$ perl mergepy.pl 自己的词库文件(py.txt) 新词库文件(sg.txt) -o py-new.txt`
 
     然后把自己的词库文件备份或者删除，把 py-new.txt 改名成 py.txt 就行了。
 
