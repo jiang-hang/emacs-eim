@@ -1,11 +1,14 @@
-* 特点
-** 五笔
+## 特点 ##
+
+**五笔**
+
  1. 临时拼音输入汉字。用 z 开头可以输入汉字的拼音并查看其五笔字码。
  2. 反查五笔。用 M-x eim-describe-char 可以查看光标处汉字的五笔字码。
  3. 加入自造词。M-x eim-table-add-word，默认是光标前的两个汉字。用 C-a 和 C-e 调整。
  4. 可以保存选择的历史。
 
-** 拼音
+**拼音**
+
  1. 自动调频
  2. 自动加入输入的词组。
  3. 不必输入词组的全部拼音，比较智能的查找词组。
@@ -14,7 +17,7 @@
 果需要作为中文标点符号，再次输入这个标点就好了。可以用 M-x
 eim-punc-translate-toggle 命令切换输入中英文标点。
  
-* 安装
+## 安装 ##
 
 如果有 make 命令，可以用 make 和 make install 命令安装。可以修改
 PREFIX 使文件安装到指定位置。windows 下可以直接设置 ELISPDIR。
@@ -45,7 +48,8 @@ eim-wb-user-file 的位置。eim-wb-history-file 要修改成能保存的文件�
 注意，如果所有文件都在 load-path 里的某个目录中，就能找到（如果没有同名
 文件的话），否则，请在文件或者配置中使用文件全名。
 
-常用的按键：
+## 常用的按键 ##
+
 |------+----------|
 | 按键 | 功能     |
 |------+----------|
@@ -58,13 +62,28 @@ eim-wb-user-file 的位置。eim-wb-history-file 要修改成能保存的文件�
 
 按键绑定可以用 C-h I(M-x describe-input-method) 查看。
 
-* 其余无关文件
+## 其余无关文件 ##
 
 charpy.st        用 Storable 模块保存的汉字拼音列表
 pychr.txt        原始的汉字拼音列表
 pyword2tbl.pl    用于把词组文件转换成可用的词库的 perl 程序
+create_charpy.pl 用于生成charpy.st文件
 sanguo.txt       一个测试文件
 mergepy.pl       可以更新词库的程序。
+
+## 导入搜狗等第三方词库 ##
+
+1. 下载搜狗等的标准词库 <http://pinyin.sogou.com/dict/detail/index/11640>
+
+1. 利用[scel2mmseg](https://github.com/archerhu/scel2mmseg)这样的工具从下载的词库中提取词语。提取出来的词放在一个文本文件中，每行一个词。上面的搜狗标准词库中，有39万多词语。
+  
+  `python scel2mmseg.py a.scel a.txt`
+  
+  生成的a.txt中，有些多余的行，利用`sed`等工具将其编辑为需要的格式，即每行一词的格式
+
+1. 假设导出的搜狗词库为sg.txt。然后利用`pyword2tbl.pl`来进行转换。具体的步骤在这个文件的最后有比较详细的说明。如果你在第一步中碰到retrieve charpy.st的错误，就需要施用create_charpy.pl来重建charpy.st。重建的命令是`perl create_charpy.pl`
+
+1. 假设使用pyword2tbl.pl的三个步骤都成功了，生成的文件为sg.txt。最后使用mergepy.pl工具来合并词库。方法如下所示：
 
 详细说明一下 mergepy.pl 的用法。如果我发布一个新版本的拼音词库，要使用
 这个词库又不想丢失自己词库里新造的词和词频信息，这时就可以用这个程序。
@@ -74,8 +93,12 @@ $ perl mergepy.pl 自己的词库文件 新词库文件 -o py-new.txt
 
 然后把自己的词库文件备份或者删除，把 py-new.txt 改名成 py.txt 就行了。
 
-* 增加汉字
-** 五笔输入法
+
+
+## 增加汉字 ##
+
+**五笔输入法**
+
 对于五笔输入法，可以选择导入 eim-wb-gbk，只要在 .emacs 里加上：
 
 (setq eim-wb-use-gbk t)
@@ -84,7 +107,8 @@ $ perl mergepy.pl 自己的词库文件 新词库文件 -o py-new.txt
 一般的输入 gbk 汉字是没有问题，因为wb.txt 中已经加入了 fcitx 中所有的
 gbk 汉字，只是如果需要造词时，不导入 gbk 汉字是无法自动造词的。
 
-** 拼音输入法
+ **拼音输入法**
+ 
 对于拼音输入法，可以通过这样一个折衷的办法，在 .emacs 中加上：
 
 (add-hook 'eim-py-load-hook
@@ -103,9 +127,10 @@ M-x eim-build-table
 
 这样应该就能正常使用了。
 
-* 如何定制一个输入法
+## 如何定制一个输入法 ##
 
-** 初级定制方法：
+**初级定制方法**
+
 例如，要设置按键，可以这样：
 (defun my-eim-wb-activate-function ()
   (add-hook 'eim-active-hook 
@@ -131,7 +156,8 @@ M-x eim-build-table
 对于五笔输入法，如果不想记录上次输入位置，设置 eim-wb-history-file 为
 nil。
 
-** 高级定制方法：
+## 高级定制方法 ##
+
 eim-use-package 可以接受两个参数，一个是 word-file，给出一个词库，一个
 是 active-function，这个 active-function 是在每次切换时都要调用的。如果
 想只在第一次启动输入法时调用一些命令，最好定义一个变量，在启动之后设置

@@ -1,4 +1,5 @@
-#! /usr/bin/perl -w          # -*- coding: utf-8 -*-
+#! /usr/bin/perl -w          
+# -*- coding: utf-8 -*-
 # pyword2tbl.pl --- Create a table for eim py input method
 # Last modify Time-stamp: <Ye Wenbin 2007-07-12 20:48:30>
 # Version: v 0.0 2006/07/17 06:29:58
@@ -29,7 +30,7 @@ my %yumu = map {$_ => 1} qw (a o e i u v ai ei ui ao ou iu
 		       ie ia ua ve er an en in un vn ang iong
 		       eng ing ong uan uang ian iang iao ue
                   uai uo);
-my $charpy = retrieve 'charpy.st';
+my $charpy = retrieve("charpy.st");
 if ($type == 1) {
     convert1($file);
 } elsif ($type == 2) {
@@ -59,23 +60,6 @@ sub usage {
       type 3:
    是把文件中的拼音合并，排序
 USAGE
-}
-
-sub createCharpy {
-    my $charfile = shift || "pychr.txt";
-    my $coding = 'gbk';
-    my %charpy;
-    open(FH, $charfile) || die "Can't open file $charfile: $!";
-    while (<FH>) {
-        chomp;
-        from_to($_, $coding, 'utf8');
-        my @r = split /\s+/;
-        foreach (1..$#r) {
-            push @{$charpy{$r[$_]}}, $r[0];
-        }
-    }
-    close FH;
-    store \%charpy, 'charpy.st';
 }
 
 ########################################
@@ -144,8 +128,8 @@ sub convert1 {
         chomp($word);
         from_to($word, $coding, 'utf8');
         my @char = ($word =~ m/(.{3})/g);
-#         print join("-", @char), "\n";
-#         return;
+#       print join("-", @char), "- debug\n";
+#       return;
         my @res = ("");
         foreach (@char) {
             @res = mult_array(\@res, $charpy->{$_});
@@ -160,7 +144,7 @@ sub convert1 {
         } else {
             push @dup, [$word, @res];
         }
-        last if $i++ > 100;
+        #last if $i++ > 1000;
     }
     close FH;
     foreach (sort keys %wordpy) {
