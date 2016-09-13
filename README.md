@@ -239,7 +239,9 @@ eim-first-char 中，或者不是第一个字符，但是不在 eim-total-char �
 
 参考 eim-wb 和 eim-py 的写法。
 
+```
 ;;; Local Variables: ***
 ;;; mode: outline ***
 ;;; coding: utf-8 ***
 ;;; End: ***
+```
